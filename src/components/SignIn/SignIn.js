@@ -20,10 +20,16 @@ class Signin extends React.Component {
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({
                 email: this.state.signinEmail,
-                password: this.state.signinPassword
+                password: this.state.signinPassword     
             })
         })
-        this.props.onRouteChange('home')
+        .then(response => response.json())
+        .then(user => {
+            if (user.id) {
+                this.props.loadUser(user);
+                this.props.onRouteChange('home');
+            }
+        })
     }
 
     render() {
@@ -57,7 +63,7 @@ class Signin extends React.Component {
                         </fieldset>
                         <div className="">
                             <input onClick={this.onSubmitSignin} 
-                                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
+                                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"    
                                 type="submit" 
                                 value="Sign in" 
                             />
